@@ -30,4 +30,6 @@ I'd like to create a basic version of Reddit with the following specification:
 
 ---
 ### Log
-- [22.08.2022] First draft
+- [22.08.2022] First draft. Initiating React frontend app.
+- [23.08.2022] Chose **Authelia** as an identity and access management solution. Set up a simple docker compose
+  with PostgreSQL, pgAdmin, Authelia, and Redis

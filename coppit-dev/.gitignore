@@ -1,0 +1,5 @@
+# for redis dump file
+redis/
+
+# for authelia db file
+authelia-config/db.sqlite3

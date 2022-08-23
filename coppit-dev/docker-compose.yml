@@ -1,0 +1,38 @@
+---
+version: "3.8"
+
+services:
+  authelia:
+    image: docker.io/authelia/authelia:latest
+    restart: unless-stopped
+    healthcheck:
+      disable: true
+    expose:
+      - 9091
+    volumes:
+      - ./authelia-config:/config
+    ports:
+      - "9091:9091"
+  redis:
+    image: redis:alpine
+    volumes:
+      - ./redis:/data
+    restart: unless-stopped
+  postgres:
+    image: postgres:14.2
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: coppit
+    ports:
+      - "5432:5432"
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+      POSTGRES_HOST_AUTH_METHOD: md5
+    ports:
+      - "5050:80"

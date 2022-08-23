@@ -1,0 +1,61 @@
+---
+###############################################################
+#                   Authelia configuration                    #
+###############################################################
+
+jwt_secret: a_very_important_secret
+default_redirection_url: https://public.example.com
+
+server:
+  host: 0.0.0.0
+  port: 9091
+
+log:
+  level: debug
+
+totp:
+  issuer: authelia.com
+
+authentication_backend:
+  file:
+    path: /config/users_database.yml #this is where your authorized users are stored
+
+access_control:
+  default_policy: deny
+  rules:
+    # Rules applied to everyone
+    - domain: public.example.com
+      policy: bypass
+    - domain: traefik.example.com
+      policy: one_factor
+
+session:
+  name: authelia_session
+  # This secret can also be set using the env variables AUTHELIA_SESSION_SECRET_FILE
+  secret: unsecure_session_secret
+  expiration: 3600  # 1 hour
+  inactivity: 300  # 5 minutes
+  domain: example.com  # Should match whatever your root protected domain is
+
+  redis:
+    host: redis
+    port: 6379
+    # This secret can also be set using the env variables AUTHELIA_SESSION_REDIS_PASSWORD_FILE
+    # password: authelia
+
+regulation:
+  max_retries: 3
+  find_time: 120
+  ban_time: 300
+
+storage:
+  encryption_key: you_must_generate_a_random_string_of_more_than_twenty_chars_and_configure_this
+  local:
+    path: /config/db.sqlite3
+
+notifier:
+  ## You can disable the notifier startup check by setting this to true.
+  disable_startup_check: true
+  ## File system is used, but it has its limitations: no 2FA or reset passwords. In production, should use SMTP instead
+  filesystem:
+    filename: /config/notification.txt
